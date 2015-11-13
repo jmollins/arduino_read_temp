@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>small science Big Adventures</title><link href="http://smallsciencebigadventures.com/" rel="alternate"></link><link href="http://smallsciencebigadventures.com/feeds/all.atom.xml" rel="self"></link><id>http://smallsciencebigadventures.com/</id><updated>2015-11-12T00:00:00-08:00</updated><entry><title>Mars Jupiter Conjuction 2015 (Oh and Mercury and Venus too!)</title><link href="http://smallsciencebigadventures.com/planets-at-sunrise.html" rel="alternate"></link><updated>2015-11-12T00:00:00-08:00</updated><author><name>Jamie Mollins</name></author><id>tag:smallsciencebigadventures.com,2015-11-12:planets-at-sunrise.html</id><summary type="html">&lt;p&gt;Summary: I photographed Jupiter, Venus, Mars, and Mercury at 0700 on Oct 16, 2015.&lt;/p&gt;
+&lt;p&gt;Back on October 16, 2015 I took an image of the &lt;a href="http://earthsky.org/tonight/all-five-visible-planets-in-october-2015-night-sky"&gt;Jupiter and Mars conjuction&lt;/a&gt;. Venus and Mercury were also visible. 
+The planets appear quite small so I highlighted them in the second image. Next time, a longer lens!&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Jupiter - Mars conjuction 2015" src="images/planets.png" title="Jupiter Mars conjuction 2015" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Jupiter - Mars conjuction 2015 annotated" src="images/planetscircled.png" title="Jupiter Mars conjuction with the planets highlighted" /&gt;&lt;/p&gt;</summary><category term="Astronomy"></category><category term="photography"></category></entry><entry><title>The Adafruit trinket and Linux</title><link href="http://smallsciencebigadventures.com/trinket-with-linux.html" rel="alternate"></link><updated>2015-06-02T10:00:00-07:00</updated><author><name>Jamie Mollins</name></author><id>tag:smallsciencebigadventures.com,2015-06-02:trinket-with-linux.html</id><summary type="html">&lt;p&gt;Summary: Using a adafruit trinket with linux&lt;/p&gt;
+&lt;p&gt;I recently purchased an &lt;a href="https://learn.adafruit.com/introducing-trinket/introduction"&gt;Adafruit trinket&lt;/a&gt; from &lt;a href="http://www.bc-robotics.com/"&gt;BC Robotics&lt;/a&gt; and I had a few plans for the small microcontroller. But before I could do that I had to get my 
+linux computer to recognize the trinket. The trinket implements USB in software rather than with hardware and my linux computer would 
+not recognize the trinket.&lt;/p&gt;
+&lt;h3&gt;Getting linux to recognize the trinket&lt;/h3&gt;
+&lt;p&gt;When I plugged the trinket into my computer it would not show up as a USB device in &lt;code&gt;/dev&lt;/code&gt;. Running 
+&lt;code&gt;lsusb&lt;/code&gt; and checking &lt;code&gt;dmesg&lt;/code&gt; showed that the device was connected but it was not assigned a location in &lt;code&gt;/dev/ttyUSBn&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;According to the &lt;a href="http://playground.arduino.cc//Linux/All"&gt;arduino&lt;/a&gt; and &lt;a href="http://capnregex.blogspot.ca/2014/02/adafruit-trinket-on-ubuntu-linux-with.html?m=0"&gt;Cap'n Regex&lt;/a&gt; sites I needed to add a rule to udev to get the trinket assigned a location in &lt;code&gt;/dev&lt;/code&gt;.
+I created a file named &lt;code&gt;99-arduino-trinket.rule&lt;/code&gt; in &lt;code&gt;/etc/udev/rules.d/&lt;/code&gt; and added the following lines:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="c"&gt;# Adafruit Trinket&lt;/span&gt;
+    &lt;span class="nv"&gt;SUBSYSTEM&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;usb&amp;quot;&lt;/span&gt;, ATTR&lt;span class="o"&gt;{&lt;/span&gt;product&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;USBtiny&amp;quot;&lt;/span&gt;, ATTR&lt;span class="o"&gt;{&lt;/span&gt;idProduct&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0c9f&amp;quot;&lt;/span&gt;, ATTRS&lt;span class="o"&gt;{&lt;/span&gt;idVendor&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1781&amp;quot;&lt;/span&gt;, &lt;span class="nv"&gt;MODE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0666&amp;quot;&lt;/span&gt;, &lt;span class="nv"&gt;GROUP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dialout&amp;quot;&lt;/span&gt;, SYMLINK+&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ttyUSB%n&amp;quot;&lt;/span&gt;
+    &lt;span class="nv"&gt;SUBSYSTEM&lt;/span&gt;&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;usb&amp;quot;&lt;/span&gt;, ATTR&lt;span class="o"&gt;{&lt;/span&gt;product&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Trinket&amp;quot;&lt;/span&gt;, ATTR&lt;span class="o"&gt;{&lt;/span&gt;idProduct&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0c9f&amp;quot;&lt;/span&gt;, ATTRS&lt;span class="o"&gt;{&lt;/span&gt;idVendor&lt;span class="o"&gt;}==&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;1781&amp;quot;&lt;/span&gt;, &lt;span class="nv"&gt;MODE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;0666&amp;quot;&lt;/span&gt;, &lt;span class="nv"&gt;GROUP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;dialout&amp;quot;&lt;/span&gt;, SYMLINK+&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ttyUSB%n&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now when the device is connected it is assigned to &lt;code&gt;/dev/ttyUSBn&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Modifying AVRDUDE.conf for programming&lt;/h3&gt;
+&lt;p&gt;The trinket was now recognized by the computer but it was programmable. According to the adafruit trinket site the &lt;code&gt;avrdude.conf&lt;/code&gt; needs to be modified for the attiny85 chip that the trinket uses. The attiny85 settings in 
+&lt;code&gt;/etc/avrdude.conf&lt;/code&gt; must be replaced with the linux &lt;a href="https://raw.githubusercontent.com/adafruit/Trinket_Arduino_Linux/1.0.5/arduino-1.0.5/hardware/tools/avrdude.conf"&gt;attiny85 settings&lt;/a&gt;. If you then start the arduino IDE and set the verbose output when uploading you can find the path 
+of the arduino IDE avrdude.conf. Mine was in &lt;code&gt;/usr/share/arduino/hardware/tools/avr/etc/avrdude.conf&lt;/code&gt;. Replace that copy of &lt;code&gt;avrdude.conf&lt;/code&gt; with the one from 
+from &lt;code&gt;/etc/avrdude.conf&lt;/code&gt;.&lt;/p&gt;</summary><category term="Arduino"></category><category term="programming"></category></entry><entry><title>House Monitor</title><link href="http://smallsciencebigadventures.com/house-monitor.html" rel="alternate"></link><updated>2015-05-02T22:00:00-07:00</updated><author><name>Jamie Mollins</name></author><id>tag:smallsciencebigadventures.com,2015-04-16:house-monitor.html</id><summary type="html">&lt;p&gt;Summary: Building a house monitor with python, openCV, and cloud storage.&lt;/p&gt;
+&lt;p&gt;I wanted an easy way to check on my house when I was away, and since it can get cold in the winter I also wanted to keep track of the house temperature.&lt;/p&gt;
+&lt;p&gt;I found that the simplest way to so this was to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;capture images of a room in my house,&lt;/li&gt;
+&lt;li&gt;read the temperature of the house,&lt;/li&gt;
+&lt;li&gt;add the time and temperature to the image as text, and&lt;/li&gt;
+&lt;li&gt;save the image to my cloud synced folder that I can view when I am away.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I have an Arduino taking the house temperature every 20 minutes (&lt;a href="http://smallsciencebigadventures.com/arduino-temp-sensor.html"&gt;see the Arduino Programming post&lt;/a&gt;) and then saving it to my Thinspeak account. The house monitor script grabs the last temperature reading saved to Thingspeak.&lt;/p&gt;
+&lt;h2&gt;The Code&lt;/h2&gt;
+&lt;p&gt;I used &lt;a href="https://www.python.org/"&gt;python&lt;/a&gt; to write the script and &lt;a href="http://opencv.org/"&gt;openCV&lt;/a&gt; to manage the webcam and writing text to the image.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;  &lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;cv2&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;time&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;datetime&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;ConfigParser&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
+      &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
+
+
+      &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;readThingspeak&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+          &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;https://api.thingspeak.com/channels/8220/feeds.json?results=1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Status: &lt;/span&gt;&lt;span class="si"&gt;%i&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;  &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;
+          &lt;span class="n"&gt;temp&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+          &lt;span class="c"&gt;#print temp&lt;/span&gt;
+          &lt;span class="n"&gt;newResult&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;temp&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;feeds&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;field1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;newResult&lt;/span&gt;
+
+          &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;newResult&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+      &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ConfigParser&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RawConfigParser&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+      &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;config.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;saveLocation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;FileLocation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;saveDir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;fileName&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;FileLocation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fileName&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;fileCounter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;FileLocation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fileCount&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+      &lt;span class="n"&gt;imageText&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strftime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt; %H:%M:%S&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;dataFileText&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;now&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strftime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;/t%H:%M:%S&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+      &lt;span class="n"&gt;camera_index&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;
+      &lt;span class="n"&gt;capture&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;VideoCapture&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;camera_index&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;ret&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;photo&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;capture&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+      &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;readThingspeak&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+      &lt;span class="n"&gt;imageText&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;imageText&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;, Temperature &lt;/span&gt;&lt;span class="si"&gt;%s&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;temperature&lt;/span&gt;
+
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;ret&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Camera successful&amp;quot;&lt;/span&gt;
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;imageText&lt;/span&gt;
+
+        &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;saveLocation&lt;/span&gt;
+
+        &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;putText&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;photo&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;imageText&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;FONT_HERSHEY_SIMPLEX&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;255&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+        &lt;span class="n"&gt;capture&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="n"&gt;retVal&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imwrite&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;saveLocation&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;fileName&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fileCounter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;.jpg&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;photo&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;retVal&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Saved&amp;quot;&lt;/span&gt;
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Filecounter: &lt;/span&gt;&lt;span class="si"&gt;%i&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;fileCounter&lt;/span&gt;
+          &lt;span class="n"&gt;fileCounter&lt;/span&gt;&lt;span class="o"&gt;+=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+          &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;FileLocation&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fileCount&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fileCounter&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+          &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;config.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;configfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;    &lt;span class="c"&gt;# save&lt;/span&gt;
+            &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;configfile&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Save Failed&amp;quot;&lt;/span&gt;
+
+        &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Camera_Test&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;photo&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;waitKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;destroyAllWindows&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+      &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;
+          &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Camera Error&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To keep track of the number of images taken and to set my save directory I created a config.cfg for the script.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[FileLocation]&lt;/span&gt;
+&lt;span class="na"&gt;savedir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;[your share directory]&lt;/span&gt;
+&lt;span class="na"&gt;filename&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;Camera&lt;/span&gt;
+&lt;span class="na"&gt;filecount&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Python"></category><category term="Electronics"></category><category term="Programming"></category></entry><entry><title>VLF Solar Monitor</title><link href="http://smallsciencebigadventures.com/vlf-solar-monitor.html" rel="alternate"></link><updated>2015-04-14T10:00:00-07:00</updated><author><name>Jamie Mollins</name></author><id>tag:smallsciencebigadventures.com,2015-04-14:vlf-solar-monitor.html</id><summary type="html">&lt;p&gt;Summary: Building a VLF solar monitor&lt;/p&gt;
+&lt;p&gt;I am in the process of building a VLF solar monitor based on &lt;a href="http://www.aavso.org/improved-gyrator-tuned-vlf-receiver)" title="AAVSO"&gt;the gyrator II from the AAVSO.&lt;/a&gt;&lt;/p&gt;</summary><category term="Astronomy"></category><category term="Electronics"></category></entry><entry><title>Arduino Programming</title><link href="http://smallsciencebigadventures.com/arduino-temp-sensor.html" rel="alternate"></link><updated>2015-03-17T10:00:00-07:00</updated><author><name>Jamie Mollins</name></author><id>tag:smallsciencebigadventures.com,2015-03-17:arduino-temp-sensor.html</id><summary type="html">&lt;p&gt;Summary: Getting the arduino to read the temperature&lt;/p&gt;
+&lt;p&gt;My Arduino has been sitting on my desk for some time and I thought it
+was about time to get it working again. I figured I would get it to do something
+simple: read the temperature from an &lt;a href="http://www.ti.com/product/lm35"&gt;LM35 sensor&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;My setup consists of:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;An &lt;a href="http://arduino.cc/en/Main/arduinoBoardDuemilanove"&gt;Arduino Duemilenove&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;An &lt;a href="http://www.ti.com/product/lm35"&gt;LM35&lt;/a&gt; connected to the Arduino&lt;/li&gt;
+&lt;li&gt;A Computer running &lt;a href="http://www.linuxmint.com"&gt;Linux Mint&lt;/a&gt;,&lt;/li&gt;
+&lt;li&gt;An account at &lt;a href="http://www.thingspeak.com"&gt;ThingSpeak&lt;/a&gt; for storing and plotting the data.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;The Arduino&lt;/h2&gt;
+&lt;p&gt;To get the temperature reading from the LM35 I programmed the arduino to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Read from the analog port (A0).&lt;/li&gt;
+&lt;li&gt;Convert the 0-1023 (10bit) to a value between 0 and 5V (Vsupply).&lt;/li&gt;
+&lt;li&gt;Convert that voltage to temperature based on the LM35 outputing 10mV/C.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="cm"&gt;/* Reads the voltage output from an LM35&lt;/span&gt;
+&lt;span class="cm"&gt;    and converts the voltage to a temperature C.&lt;/span&gt;
+&lt;span class="cm"&gt;    The analog input: 0 - 1023&lt;/span&gt;
+&lt;span class="cm"&gt;    Vs: 5V&lt;/span&gt;
+&lt;span class="cm"&gt;    LM35 output: 10mV/C&lt;/span&gt;
+&lt;span class="cm"&gt;    */&lt;/span&gt;
+
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;inputPin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;A0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;     &lt;span class="c1"&gt;// LM35 output connected to Analog pin0&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;inputValue&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;// analog sensor value 0 to 1023&lt;/span&gt;
+    &lt;span class="kt"&gt;float&lt;/span&gt; &lt;span class="n"&gt;temperature&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;//initialize temperature variable&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;tempValue&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="c1"&gt;// inputPin is an INPUT&lt;/span&gt;
+      &lt;span class="n"&gt;pinMode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inputPin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;INPUT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;  
+      &lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;9600&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;loop&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="c1"&gt;// read the voltage from the LM35&lt;/span&gt;
+      &lt;span class="n"&gt;inputValue&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;analogRead&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inputPin&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+      &lt;span class="c1"&gt;//map the analog reading of the LM35 based on a Vs: 5V and Vin: 10mV/C&lt;/span&gt;
+      &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;float&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inputValue&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mf"&gt;1023.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mf"&gt;500.0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="c1"&gt;//print to USB&lt;/span&gt;
+      &lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Temperature: &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The output from the Arduino looks like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    Temperature: 25
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;Read the Arduino output and send to ThingSpeak&lt;/h1&gt;
+&lt;p&gt;The output from the Arduino was read by a python script on my laptop. It received the temperature
+ from the Arduino and then posted it to my account at &lt;a href="http://www.thingspeak.com"&gt;ThingSpeak&lt;/a&gt;. You could just as easily write the
+ temperatures to a file, but I like how easy it is to get a nice chart from ThingSpeak.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="c"&gt;#!/usr/bin/env python&lt;/span&gt;
+    &lt;span class="c"&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+    &lt;span class="c"&gt;#&lt;/span&gt;
+
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;serial&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;re&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;ConfigParser&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;sendToThingSpeak&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;Parameters&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;key&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;field1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
+        &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;post&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;https://api.thingspeak.com/update&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;Parameters&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Starting ...&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConfigParser&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ConfigParser&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;config.cfg&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;api_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;default&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="c"&gt;#Search pattern for the temperature value&lt;/span&gt;
+    &lt;span class="n"&gt;dataForm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;Temperature: (\d+\.\d*)&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;repeat&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;
+
+    &lt;span class="c"&gt;#set up the USB port&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Setting up serial ...&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;ser&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Serial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/dev/ttyUSB0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9600&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;timeout&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;repeat&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="c"&gt;#read in the temperature from the Arduino&lt;/span&gt;
+        &lt;span class="n"&gt;dataLine&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;ser&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;readline&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;dataLine&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="c"&gt;#if the reading was successful&lt;/span&gt;
+            &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;re&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dataForm&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;dataLine&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;#extract the temperature from the reading&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+                &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;repeat&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;
+                &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sendToThingSpeak&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;
+    &lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And the config.cfg file is just&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;api_key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;thingspeak&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I used crontab to run the python script every 20 minutes. Since I used a config file to keep my
+api_key I had to get crontab cd into the python scripts directory then run the script. As well since the script
+prints output, the output needs to be directed to a log file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;crontab
+
+    */20 * * * * cd path/to/python/script.py %% ./pythonscript.py &amp;gt;&amp;gt; script.log
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;I then can call the chart from thingspeak and place it on my page using&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="nt"&gt;&amp;lt;iframe&lt;/span&gt; &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;620&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;370&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;border: 1px solid #cccccc;&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;https://thingspeak.com/channels/8220/charts/1?width=600&amp;amp;height=350&amp;amp;results=20&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The values are then plotted using the ThingSpeaks chart api.&lt;/p&gt;
+&lt;iframe width="620" height="370" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/8220/charts/1?width=600&amp;height=350&amp;results=20"&gt;&lt;/iframe&gt;</summary><category term="Arduino"></category><category term="python"></category><category term="ThingSpeak"></category><category term="programming"></category></entry></feed>

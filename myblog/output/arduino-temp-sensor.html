@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Arduino Programming - small science Big Adventures</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://smallsciencebigadventures.com/arduino-temp-sensor.html">
+
+        <meta name="author" content="Jamie Mollins" />
+        <meta name="keywords" content="Arduino,python,ThingSpeak,programming" />
+        <meta name="description" content="Summary: Getting the arduino to read the temperature My Arduino has been sitting on my desk for some time and I thought it was about time to get it working again. I figured I would get it to do something simple: read the temperature from an LM35 sensor. My setup ..." />
+
+        <meta property="og:site_name" content="small science Big Adventures" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Arduino Programming"/>
+        <meta property="og:url" content="http://smallsciencebigadventures.com/arduino-temp-sensor.html"/>
+        <meta property="og:description" content="Summary: Getting the arduino to read the temperature My Arduino has been sitting on my desk for some time and I thought it was about time to get it working again. I figured I would get it to do something simple: read the temperature from an LM35 sensor. My setup ..."/>
+        <meta property="article:published_time" content="2015-03-17" />
+            <meta property="article:section" content="Programming" />
+            <meta property="article:tag" content="Arduino" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:tag" content="ThingSpeak" />
+            <meta property="article:tag" content="programming" />
+            <meta property="article:author" content="Jamie Mollins" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://smallsciencebigadventures.com/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="http://smallsciencebigadventures.com/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://smallsciencebigadventures.com/theme/css/pygments/paraiso-dark.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://smallsciencebigadventures.com/theme/css/style.css" type="text/css"/>
+
+        <link href="http://smallsciencebigadventures.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="small science Big Adventures ATOM Feed"/>
+
+        <link href="http://smallsciencebigadventures.com/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
+              title="small science Big Adventures RSS Feed"/>
+
+
+        <link href="http://smallsciencebigadventures.com/feeds/programming.atom.xml" type="application/atom+xml" rel="alternate"
+              title="small science Big Adventures Programming ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://smallsciencebigadventures.com/" class="navbar-brand">
+small science Big Adventures            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="http://smallsciencebigadventures.com/category/programming.html">Programming</a>
+                        </li>
+                        <li >
+                            <a href="http://smallsciencebigadventures.com/category/astronomy.html">Astronomy</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://smallsciencebigadventures.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://smallsciencebigadventures.com/arduino-temp-sensor.html"
+                       rel="bookmark"
+                       title="Permalink to Arduino Programming">
+                        Arduino Programming
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2015-03-17T10:00:00-07:00"> Tue 17 March 2015</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://smallsciencebigadventures.com/tag/arduino.html">Arduino</a>
+        /
+	<a href="http://smallsciencebigadventures.com/tag/python.html">python</a>
+        /
+	<a href="http://smallsciencebigadventures.com/tag/thingspeak.html">ThingSpeak</a>
+        /
+	<a href="http://smallsciencebigadventures.com/tag/programming.html">programming</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>Summary: Getting the arduino to read the temperature</p>
+<p>My Arduino has been sitting on my desk for some time and I thought it
+was about time to get it working again. I figured I would get it to do something
+simple: read the temperature from an <a href="http://www.ti.com/product/lm35">LM35 sensor</a>.</p>
+<p>My setup consists of:</p>
+<ol>
+<li>An <a href="http://arduino.cc/en/Main/arduinoBoardDuemilanove">Arduino Duemilenove</a>,</li>
+<li>An <a href="http://www.ti.com/product/lm35">LM35</a> connected to the Arduino</li>
+<li>A Computer running <a href="http://www.linuxmint.com">Linux Mint</a>,</li>
+<li>An account at <a href="http://www.thingspeak.com">ThingSpeak</a> for storing and plotting the data.</li>
+</ol>
+<h2>The Arduino</h2>
+<p>To get the temperature reading from the LM35 I programmed the arduino to:</p>
+<ol>
+<li>Read from the analog port (A0).</li>
+<li>Convert the 0-1023 (10bit) to a value between 0 and 5V (Vsupply).</li>
+<li>Convert that voltage to temperature based on the LM35 outputing 10mV/C.</li>
+</ol>
+<div class="highlight"><pre>    <span class="cm">/* Reads the voltage output from an LM35</span>
+<span class="cm">    and converts the voltage to a temperature C.</span>
+<span class="cm">    The analog input: 0 - 1023</span>
+<span class="cm">    Vs: 5V</span>
+<span class="cm">    LM35 output: 10mV/C</span>
+<span class="cm">    */</span>
+
+    <span class="kt">int</span> <span class="n">inputPin</span> <span class="o">=</span> <span class="n">A0</span><span class="p">;</span>     <span class="c1">// LM35 output connected to Analog pin0</span>
+    <span class="kt">int</span> <span class="n">inputValue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>    <span class="c1">// analog sensor value 0 to 1023</span>
+    <span class="kt">float</span> <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">//initialize temperature variable</span>
+    <span class="kt">char</span> <span class="n">tempValue</span><span class="p">[]</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// inputPin is an INPUT</span>
+      <span class="n">pinMode</span><span class="p">(</span><span class="n">inputPin</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">);</span>  
+      <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// read the voltage from the LM35</span>
+      <span class="n">inputValue</span> <span class="o">=</span> <span class="n">analogRead</span><span class="p">(</span><span class="n">inputPin</span><span class="p">);</span>
+
+      <span class="c1">//map the analog reading of the LM35 based on a Vs: 5V and Vin: 10mV/C</span>
+      <span class="n">temperature</span><span class="o">=</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">inputValue</span><span class="p">)</span><span class="o">/</span><span class="mf">1023.0</span><span class="p">)</span><span class="o">*</span><span class="mf">500.0</span><span class="p">;</span>
+      <span class="c1">//print to USB</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Temperature: &quot;</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>The output from the Arduino looks like:</p>
+<div class="highlight"><pre>    Temperature: 25
+</pre></div>
+
+
+<h1>Read the Arduino output and send to ThingSpeak</h1>
+<p>The output from the Arduino was read by a python script on my laptop. It received the temperature
+ from the Arduino and then posted it to my account at <a href="http://www.thingspeak.com">ThingSpeak</a>. You could just as easily write the
+ temperatures to a file, but I like how easy it is to get a nice chart from ThingSpeak.</p>
+<div class="highlight"><pre>    <span class="c">#!/usr/bin/env python</span>
+    <span class="c"># -*- coding: utf-8 -*-</span>
+    <span class="c">#</span>
+
+    <span class="kn">import</span> <span class="nn">serial</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
+    <span class="kn">import</span> <span class="nn">ConfigParser</span>
+
+    <span class="k">def</span> <span class="nf">sendToThingSpeak</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">api_key</span><span class="p">):</span>
+        <span class="n">Parameters</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;key&quot;</span><span class="p">:</span><span class="n">api_key</span><span class="p">,</span> <span class="s">&quot;field1&quot;</span><span class="p">:</span><span class="n">temperature</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)}</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&quot;https://api.thingspeak.com/update&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">Parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+
+    <span class="k">print</span> <span class="s">&quot;Starting ...&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s">&#39;config.cfg&#39;</span><span class="p">)</span>
+    <span class="n">api_key</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">,</span><span class="s">&#39;api_key&#39;</span><span class="p">)</span>
+
+    <span class="c">#Search pattern for the temperature value</span>
+    <span class="n">dataForm</span> <span class="o">=</span> <span class="s">r&#39;Temperature: (\d+\.\d*)&#39;</span>
+    <span class="n">repeat</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="c">#set up the USB port</span>
+    <span class="k">print</span> <span class="s">&quot;Setting up serial ...&quot;</span>
+    <span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="s">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span> <span class="mi">9600</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="n">repeat</span><span class="p">):</span>
+    <span class="c">#read in the temperature from the Arduino</span>
+        <span class="n">dataLine</span><span class="o">=</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">dataLine</span><span class="p">:</span> <span class="c">#if the reading was successful</span>
+            <span class="n">temperature</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">dataForm</span><span class="p">,</span><span class="n">dataLine</span><span class="p">)</span> <span class="c">#extract the temperature from the reading</span>
+            <span class="k">if</span> <span class="n">temperature</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">temperature</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">sendToThingSpeak</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">api_key</span><span class="p">)</span>
+                <span class="k">print</span> <span class="n">response</span>
+    <span class="n">serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+
+<p>And the config.cfg file is just</p>
+<div class="highlight"><pre>    <span class="p">[</span><span class="n">default</span><span class="p">]</span>
+    <span class="n">api_key</span><span class="p">:</span><span class="n">your</span> <span class="n">thingspeak</span> <span class="n">key</span>
+</pre></div>
+
+
+<p>I used crontab to run the python script every 20 minutes. Since I used a config file to keep my
+api_key I had to get crontab cd into the python scripts directory then run the script. As well since the script
+prints output, the output needs to be directed to a log file.</p>
+<div class="highlight"><pre>crontab
+
+    */20 * * * * cd path/to/python/script.py %% ./pythonscript.py &gt;&gt; script.log
+</pre></div>
+
+
+<p>I then can call the chart from thingspeak and place it on my page using</p>
+<div class="highlight"><pre>    <span class="nt">&lt;iframe</span> <span class="na">width=</span><span class="s">&quot;620&quot;</span> <span class="na">height=</span><span class="s">&quot;370&quot;</span> <span class="na">style=</span><span class="s">&quot;border: 1px solid #cccccc;&quot;</span> <span class="na">src=</span><span class="s">&quot;https://thingspeak.com/channels/8220/charts/1?width=600&amp;height=350&amp;results=20&quot;</span><span class="nt">&gt;&lt;/iframe&gt;</span>
+</pre></div>
+
+
+<p>The values are then plotted using the ThingSpeaks chart api.</p>
+<iframe width="620" height="370" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/8220/charts/1?width=600&height=350&results=20"></iframe>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="http://github.com/jmollins"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+
+
+            <li class="list-group-item"><a href="http://smallsciencebigadventures.com/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group " id="tags">
+                    <li class="list-group-item tag-1">
+                        <a href="http://smallsciencebigadventures.com/tag/programming.html">
+                            programming
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
+                        <a href="http://smallsciencebigadventures.com/tag/electronics.html">
+                            Electronics
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
+                        <a href="http://smallsciencebigadventures.com/tag/astronomy.html">
+                            Astronomy
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
+                        <a href="http://smallsciencebigadventures.com/tag/arduino.html">
+                            Arduino
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
+                        <a href="http://smallsciencebigadventures.com/tag/python.html">
+                            Python
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://smallsciencebigadventures.com/tag/photography.html">
+                            photography
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://smallsciencebigadventures.com/tag/thingspeak.html">
+                            ThingSpeak
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2015 Jamie Mollins
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://smallsciencebigadventures.com/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://smallsciencebigadventures.com/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://smallsciencebigadventures.com/theme/js/respond.min.js"></script>
+
+    <script src="http://smallsciencebigadventures.com/theme/js/bodypadding.js"></script>
+
+</body>
+</html>
